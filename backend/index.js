@@ -2,7 +2,7 @@
 import app from './server.js'
 import mongodb from 'mongodb'
 import dotenv from 'dotenv'
-import restaurantsDAO from './api/dao/restaurantsDAO.js'
+import RestaurantsDAO from './dao/restaurantsDAO.js'
 
 dotenv.config( )
 
@@ -13,15 +13,17 @@ const port = process.env.PORT || 8000
 MongoClient.connect( 
     process.env.RESTREVIEWS_DB_URI, {
         maxPoolSize: 50,
-        wtimeout: 2500,
+        wtimeoutMS: 2500,
         useNewUrlParser: true,
     }
 )
 .catch( err => {
-    console.log( 'error: ' + err.stack )
+    console.error( 'error: ' + err.stack )
     process.exit( 1 )
 } )
 .then( async client => {
+    await RestaurantsDAO.injectDB( client )
+
     app.listen( port, () => {
         console.log( `App starts listening on port ${port}` )
     } );
