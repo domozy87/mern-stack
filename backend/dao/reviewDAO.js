@@ -45,13 +45,14 @@ export default class ReviewDAO {
      * @param {Date} date 
      * @returns 
      */
+
     static addReview = async ( restaurantId, user, review, date ) => {
         try {
             const reviewDoc = {
                 name: user.name,
                 date: date,
                 text: review,
-                restaurant_id: objectId( restaurantId )
+                restaurant_id: ObjectId( restaurantId )
             }
 
             return await reviews.insertOne( reviewDoc )
@@ -95,7 +96,7 @@ export default class ReviewDAO {
 
     static deleteReview = async ( reviewId, userId ) => {
         try {
-            const deleteResponse = await review.deleteOne(
+            const deleteResponse = await reviews.deleteOne(
                 { _id: ObjectId( reviewId ), user_id: userId, }
             )
 
